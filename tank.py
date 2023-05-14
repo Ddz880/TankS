@@ -1,0 +1,196 @@
+import pygame
+from random import randint
+pygame.init()
+width = 800
+length = 600
+fps = 60
+tank_size = 32
+window = pygame.display.set_mode((width, length))
+timer = pygame.time.Clock()
+directions = [[-1, 0], [0, -1], [1, 0], [0, 1]]
+font30 = pygame.font.Font(None, 30)
+block_picture = pygame.image.load('block.png')
+tank_picture = [
+    pygame.image.load('left_tank.png'),
+    pygame.image.load('up_tank.png'),
+    pygame.image.load('right_tank.png'),
+    pygame.image.load('down_tank.png'),
+]
+
+pygame.mixer.music.load('fon_mus.mp3')
+pygame.mixer.music.play(-1)
+back_image = pygame.image.load('fon_img.webp')
+back_image = pygame.transform.scale(back_image, (width, length))#
+sound_shoot = pygame.mixer.Sound('vistrel.mp3')
+sound_wentin = pygame.mixer.Sound('popal.mp3')
+sound_end = pygame.mixer.Sound('end.mp3')
+
+class UI:
+    def __init__(self):
+        pass
+
+    def update(self):
+        pass
+
+    def draw(self):
+        i = 0
+        for ob in object:
+            if ob.type == 'tank':
+                x = 5 + i *70
+                y = 5
+                pygame.draw.rect(window, ob.color, (x, y, 22,22))
+                текст = font30.render(str(ob.health), True, ob.color)
+                window.blit(текст, (x + 32, y))
+                i += 1
+
+game = True
+
+
+
+class Tank:
+    def __init__(self, color, x, y, direction, list_buttons):
+        object.append(self)
+        self.type = 'tank'
+
+        self.color = color
+        self.rectangle = pygame.Rect(x, y, tank_size, tank_size)
+        self.direction = direction
+        self.move_speed = 2
+        self.bullet_damage = 1
+        self.bullet_speed = 5
+        self.count = 0
+        self.shoot_count = 60
+        self.health = 5
+
+        self.key_left = list_buttons[0]
+        self.key_up = list_buttons[1]
+        self.key_right = list_buttons[2]
+        self.key_down = list_buttons[3]
+        self.key_shoot = list_buttons[4]
+    def update(self):
+        
+        if keys[self.key_left]:
+                self.rectangle.x -= self.move_speed
+                self.direction = 0
+
+        if keys[self.key_up]:
+                self.rectangle.y -= self.move_speed
+                self.direction = 1
+                print('y')
+
+        if keys[self.key_right]:
+                self.rectangle.x += self.move_speed
+                self.direction = 2
+
+        if keys[self.key_down]:
+                self.rectangle.y += self.move_speed
+                self.direction = 3
+
+        if keys[self.key_shoot] and self.count == self.shoot_count:
+                speed_x = directions[self.direction][0] * self.bullet_speed
+                speed_y = directions[self.direction][1] * self.bullet_speed
+                Bullet(self, self.rectangle.centerx, self.rectangle.centery, speed_x, speed_y, self.bullet_damage)
+                self.count = 0
+                sound_shoot.play()
+
+        if self.count < self.shoot_count:
+            self.count += 1
+    def draw(self):
+        pygame.draw.rect(window, self.color, self.rectangle)
+        
+        x = self.rectangle.centerx + directions[self.direction][0] * 15
+        y = self.rectangle.centery + directions[self.direction][1] * 15
+        pygame.draw.line(window, 'white', (self.rectangle.centerx, self.rectangle.centery), (x,y), 3)
+        window.blit(tank_picture[self.direction], self.rectangle)
+    def damage_from_bullet(self,damage):
+        global finish
+        self.health -= damage
+        if self.health <= 0:
+            object.remove(self)
+            sound_end.play()
+            finish = True
+
+class Bullet:
+    def __init__(self, shooter, x, y, speed_x, speed_y, damage):
+        bullets.append(self)
+        self.shooter = shooter
+        self.x = x
+        self.y = y
+        self.speed_x = speed_x
+        self.speed_y = speed_y
+        self.damage = damage
+
+    def update(self):
+        self.x += self.speed_x
+        self.y += self.speed_y
+        if self.x < 0 or self.x > width or self.y < 0 or self.y > length:
+            bullets.remove(self)
+        else:
+            for ob in object:
+                if ob != self.shooter and ob.rectangle.collidepoint(self.x, self.y):
+                    ob.damage_from_bullet(self.damage)
+                    sound_wentin.play()#
+                    bullets.remove(self)
+                    break
+    def draw(self):
+        pygame.draw.circle(window, 'pink', (self.x, self.y), 2)
+class Block:
+    def __init__(self, x, y, size):
+        object.append(self)
+        self.type = 'block'
+        self.rectangle = pygame.Rect(x, y, size, size)
+        self.health = 1
+
+    def update(self):
+        pass
+
+    def draw(self):
+        pygame.draw.rect(window, 'pink', self.rectangle)
+        pygame.draw.rect(window, 'red', self.rectangle, 2)
+        window.blit(block_picture, self.rectangle)
+
+
+    def damage_from_bullet(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            object.remove(self)
+bullets = []
+object = []
+Tank('green', 50, 50, 0, [pygame.K_a, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_SPACE])
+Tank('pink', 250, 350, 0, [pygame.K_LEFT, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_l])
+ui = UI()
+for i in range(70):
+    while True:
+        x = randint(0, width // tank_size - 1) * tank_size
+        y = randint(0, length // tank_size - 1) * tank_size
+        block = pygame.Rect(x, y, tank_size, tank_size)
+        found = False
+        for ob in object:
+            if block.colliderect(ob.rectangle):
+                found = True
+        if found == False:
+            break
+
+    Block(x, y, tank_size)
+
+
+while game == True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game = False
+
+    pygame.display.update()
+    timer.tick(fps)
+
+    keys = pygame.key.get_pressed()
+    for ob in object:
+            ob.update()
+    for b in bullets:
+        b.update()
+    ui.update() 
+    window.fill('black')
+    for b in bullets:
+        b.draw()
+    for ob in object:
+        ob.draw()
+    ui.draw()
