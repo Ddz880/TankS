@@ -30,6 +30,7 @@ class Tank:#
         if keys[self.key_up]:#
             self.rectangle.y -= self.move_speed#
             self.direction = 1#
+            print('y')
 
         if keys[self.key_right]:#
             self.rectangle.x += self.move_speed#
@@ -38,63 +39,69 @@ class Tank:#
         if keys[self.key_down]:#
             self.rectangle.y += self.move_speed#
             self.direction = 3#
-  if keys[self.key_shoot]:#
-            speed_x = direction[self.direction][0] * self.bullet_speed#
-            speed_y = direction[self.direction][1] * self.bullet_speed#
-            Bullet(self, self.rectangle.centerx, self.rectangle.centery, speed_x, speed_y, self.bullet_damage)#
+  if keys[self.key_shoot] and self.count == self.shoot_count:
+            speed_x = direction[self.direction][0] * self.bullet_speed
+            speed_y = direction[self.direction][1] * self.bullet_speed
+            Bullet(self, self.rectangle.centerx, self.rectangle.centery, speed_x, speed_y, self.bullet_damage)
+            self.count = 0
+  if self.count < self.shoot_count:
+    self.count += 1
   def draw(self):#
-    pygame.draw.rect(window, self.color, self.rectangle)#
+    pygame.draw.rect(window, self.color, self.rectangle)
     
-    x = self.rectangle.centerx + directions[self.direction][0] * 15#
-    y = self.rectangle.centery + directions[self.direction][1] * 15#
-    pygame.draw.line(window, 'white', (self.rectangle.centerx, self.rectangle.centery), (x,y), 3)#
-class Bullet:#
-    def __init__(self, shooter, x, y, speed_x, speed_y, damage):#
-        bullets.append(self)#
-        self.shooter = shooter#
-        self.икс = икс#
-        self.игрек = игрек#
-        self.скор_икс = скор_икс#
-        self.скор_игрек = скор_игрек#
-        self.урон = урон#
+    x = self.rectangle.centerx + directions[self.direction][0] * 15
+    y = self.rectangle.centery + directions[self.direction][1] * 15
+    pygame.draw.line(window, 'white', (self.rectangle.centerx, self.rectangle.centery), (x,y), 3)
+class Bullet:
+    def __init__(self, shooter, x, y, speed_x, speed_y, damage):
+        bullets.append(self)
+        self.shooter = shooter
+        self.икс = икс
+        self.игрек = игрек
+        self.скор_икс = скор_икс
+        self.скор_игрек = скор_игрек
+        self.урон = урон
 
-    def обновлять(self):#
-        self.икс += self.скор_икс#
-        self.игрек += self.скор_игрек#
+    def update(self):
+        self.икс += self.скор_икс
+        self.игрек += self.скор_игрек
+    if self.x < 0 or self.x > width or self.y < 0 or self.y > length:
+      bullets.remove(self)
+    def draw(self):
+        pygame.draw.circle(window, 'pink', (self.x, self.y), 2)
+bullets = []
+objects = []
+Tank('green', 50, 50, 0, [pygame.K_a, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_SPACE])
+Tank('pink', 250, 350, 0, [pygame.K_LEFT, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_l])
+  for ob in objects:
+        ob.update()
+  for b in bullets:
+    b.update()
 
-    def draw(self):#
-        pygame.draw.circle(window, 'pink', (self.x, self.y), 2)#
-bullets = []#
-objects = []#
-Tank('green', 50, 50, 0, [pygame.K_a, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_SPACE])#
-Tank('pink', 250, 350, 0, [pygame.K_LEFT, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_l])#
-  for ob in objects:#
-        ob.update()#
-  for b in bullets:#
-    b.update()#
-
-    window.fill('black')#
-    for b in bullets:#
-      b.draw()#
-    for ob in objects:#
-        ob.draw()#
+    window.fill('black')
+    for b in bullets:
+      b.draw()
+    for ob in objects:
+        ob.draw()
 3
 class Tank:
     def __init__ (self, color, 100, 130, direction	, list_buttons):
-        objects.append(self)#
-        self.type = 'tank'#
+        objects.append(self)
+        self.type = 'tank'
 
-        self.color = color#
-        self.rectangle = pygame.Rect(x, y, tank_size, tank_size)#
-        self.direction = direction#
-        self.move_speed = 2#
-        self.bullet_damage = 1#
-        self.bullet_speed = 5#
+        self.color = color
+        self.rectangle = pygame.Rect(x, y, tank_size, tank_size)
+        self.direction = direction
+        self.move_speed = 2
+        self.bullet_damage = 1
+        self.bullet_speed = 5
+        self.counter = 0
+        self.shoot_count = 60
 
-        self.key_left = a[0]#
-        self.key_up = w[1]#
-        self.key_right = d[2]#
-        self.key_down = s[3]#
-        self.key_shoot = e[4]#
+        self.key_left = a[0]
+        self.key_up = w[1]
+        self.key_right = d[2]
+        self.key_down = s[3]
+        self.key_shoot = e[4]
 
-keys = pygame.key.get_pressed()#
+keys = pygame.key.get_pressed()
