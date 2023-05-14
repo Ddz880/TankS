@@ -1,0 +1,52 @@
+1
+import pygame
+pygame.init()
+width = 800
+length = 600
+fps = 60
+tank_size = 32#
+window = pygame.display.set_mode((width, length))
+timer = pygame.time.Clock()
+game = True
+while game:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      game = False
+
+pygame.display.update()
+timer.tick(fps)
+
+
+2
+class Tank:#
+  def __init__ (self):#
+    pass
+  def update(self):#
+    pass
+  def draw(self):#
+    pygame.draw.rect(window, self.color, self.rectangle)#
+objects = []#
+Tank('green', 50, 50, 0, [pygame.K_a, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_SPACE])#
+Tank('pink', 250, 350, 0, [pygame.K_LEFT, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_l])#
+  for ob in objects:#
+        ob.update()#
+
+    window.fill('black')#
+    for ob in objects:#
+        ob.draw()#
+3
+class Tank:
+    def __init__ (self, color, 100, 130, direction	, list_buttons):
+        objects.append(self)#
+        self.type = 'tank'#
+
+        self.color = color#
+        self.rectangle = pygame.Rect(x, y, tank_size, tank_size)#
+        self.direction = direction#
+        self.move_speed = 2#
+
+        self.key_left = a[0]#
+        self.key_up = w[1]#
+        self.key_right = d[2]#
+        self.key_down = s[3]#
+        self.key_shoot = e[4]#
