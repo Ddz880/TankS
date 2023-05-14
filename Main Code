@@ -8,21 +8,21 @@ window = pygame.display.set_mode((width, length))
 timer = pygame.time.Clock()
 directions = [[-1, 0], [0, -1], [1, 0], [0, 1]]
 font30 = pygame.font.Font(None, 30)
-block_picture = pygame.image.load('block.png')
+#block_picture = pygame.image.load('block.png')
 tank_picture = [
-    pygame.image.load('left_tank.png'),
-    pygame.image.load('up_tank.png'),
-    pygame.image.load('right_tank.png'),
-    pygame.image.load('down_tank.png'),
+    #pygame.image.load('left_tank.png'),
+    #pygame.image.load('up_tank.png'),
+    #pygame.image.load('right_tank.png'),
+    #pygame.image.load('down_tank.png'),
 ]
 
-pygame.mixer.music.load('fon_mus.mp3')
-pygame.mixer.music.play(-1)
-back_image = pygame.image.load('fon_img.webp')#
-back_image = pygame.transform.scale(back_image, (width, length))#
-sound_shoot = pygame.mixer.Sound('vistrel.mp3')#
-sound_wentin = pygame.mixer.Sound('popal.mp3')#
-sound_end = pygame.mixer.Sound('end.mp3')#
+#pygame.mixer.music.load('fon_mus.mp3')
+#pygame.mixer.music.play(-1)
+#back_image = pygame.image.load('fon_img.webp')
+#back_image = pygame.transform.scale(back_image, (width, length))#
+#sound_shoot = pygame.mixer.Sound('vistrel.mp3')
+#sound_wentin = pygame.mixer.Sound('popal.mp3')
+#sound_end = pygame.mixer.Sound('end.mp3')
 
 class UI:
     def __init__(self):
@@ -33,7 +33,7 @@ class UI:
 
     def draw(self):
         i = 0
-        for ob in objects:
+        for ob in object:
             if ob.type == 'tank':
                 x = 5 + i *70
                 y = 5
@@ -71,7 +71,7 @@ class Tank:
     if keys[self.key_down]:
             self.rectangle.y += self.move_speed
             self.direction = 3
-for ob in objects:
+for ob in object:
             if ob != self and self.rectangle.colliderect(ob.rectangle):
                 self.rectangle.x = old_x
                 self.rectangle.y = old_y
@@ -92,11 +92,11 @@ def draw(self):
     y = self.rectangle.centery + directions[self.direction][1] * 15
     pygame.draw.line(window, 'white', (self.rectangle.centerx, self.rectangle.centery), (x,y), 3)
     window.blit(tank_picture[self.direction], self.rectangle)
-def damage_from_bullet(self,damage)
+def damage_from_bullet(self,damage):
     global finish
     self.health -= damage
 if self.health <= 0:
-    objects.remove(self)
+    object.remove(self)
     sound_end.play()
     finish = True
 
@@ -116,7 +116,7 @@ class Bullet:
     if self.x < 0 or self.x > width or self.y < 0 or self.y > length:
       bullets.remove(self)
     else:
-            for ob in objects:
+            for ob in object:
                 if ob != self.shooter and ob.rectangle.collidepoint(self.x, self.y):
                     ob.damage_from_bullet(self.damage)
                     sound_wentin.play()#
@@ -126,7 +126,7 @@ class Bullet:
         pygame.draw.circle(window, 'pink', (self.x, self.y), 2)
 class Block:
     def __init__(self, x, y, size):
-        objects.append(self)
+        object.append(self)
         self.type = 'block'
         self.rectangle = pygame.Rect(x, y, size, size)
         self.health = 1
@@ -143,9 +143,9 @@ class Block:
     def damage_from_bullet(self, damage):
         self.health -= damage
         if self.health <= 0:
-            objects.remove(self)
+            object.remove(self)
 bullets = []
-objects = []
+object = []
 Tank('green', 50, 50, 0, [pygame.K_a, pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_SPACE])
 Tank('pink', 250, 350, 0, [pygame.K_LEFT, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_l])
 ui = UI()
@@ -155,15 +155,13 @@ for i in range(70):
         y = randint(0, len // tank_size - 1) * tank_size
         block = pygame.Rect(x, y, tank_size, tank_size)
         found = False
-        for ob in objects:
+        for ob in object:
             if block.colliderect(ob.rectangle):
                 found = True
-if found == False:
-    break
 Block(x, y, tank_size)
 
 
-for ob in objects:
+for ob in object:
         ob.update()
 for b in bullets:
     b.update()
@@ -171,13 +169,12 @@ ui.update()
 window.fill('black')
 for b in bullets:
     b.draw()
-for ob in objects:
+for ob in object:
     ob.draw()
 ui.draw()
-3
 class Tank:
-    def __init__ (self, color, 100, 130, direction	, list_buttons):
-        objects.append(self)
+    def __init__(self, color, x, y, direction, list_buttons):
+        object.append(self)
         self.type = 'tank'
 
         self.color = color
