@@ -17,13 +17,13 @@ tank_picture = [
     pygame.image.load('down_tank.png'),
 ]
 
-#pygame.mixer.music.load('fon_mus.mp3')
-#pygame.mixer.music.play(-1)
-#back_image = pygame.image.load('fon_img.webp')
-#back_image = pygame.transform.scale(back_image, (width, length))#
-#sound_shoot = pygame.mixer.Sound('vistrel.mp3')
-#sound_wentin = pygame.mixer.Sound('popal.mp3')
-#sound_end = pygame.mixer.Sound('end.mp3')
+pygame.mixer.music.load('fon_mus.mp3')
+pygame.mixer.music.play(-1)
+back_image = pygame.image.load('fon_img.webp')
+back_image = pygame.transform.scale(back_image, (width, length))#
+sound_shoot = pygame.mixer.Sound('vistrel.mp3')
+sound_wentin = pygame.mixer.Sound('popal.mp3')
+sound_end = pygame.mixer.Sound('end.mp3')
 
 class UI:
     def __init__(self):
@@ -59,8 +59,8 @@ class Tank:
         self.bullet_damage = 1
         self.bullet_speed = 5
         self.count = 0
-        self.shoot_count = 60
-        self.health = 5
+        self.shoot_count = 20
+        self.health = 4
 
         self.key_left = list_buttons[0]
         self.key_up = list_buttons[1]
