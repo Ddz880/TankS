@@ -17,13 +17,13 @@ tank_picture = [
     pygame.image.load('down_tank.png'),
 ]
 
-pygame.mixer.music.load('fon_mus.mp3')
-pygame.mixer.music.play(-1)
-back_image = pygame.image.load('fon_img.webp')
-back_image = pygame.transform.scale(back_image, (width, length))#
-sound_shoot = pygame.mixer.Sound('vistrel.mp3')
-sound_wentin = pygame.mixer.Sound('popal.mp3')
-sound_end = pygame.mixer.Sound('end.mp3')
+#pygame.mixer.music.load('fon_mus.mp3')
+#pygame.mixer.music.play(-1)
+#back_image = pygame.image.load('fon_img.webp')
+#back_image = pygame.transform.scale(back_image, (width, length))#
+#sound_shoot = pygame.mixer.Sound('vistrel.mp3')
+#sound_wentin = pygame.mixer.Sound('popal.mp3')
+#sound_end = pygame.mixer.Sound('end.mp3')
 
 class UI:
     def __init__(self):
